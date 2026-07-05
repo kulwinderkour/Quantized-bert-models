@@ -1,0 +1,1 @@
+class is basically userdefined template or blueprint to create objects
