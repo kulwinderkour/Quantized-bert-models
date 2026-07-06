@@ -83,7 +83,7 @@ class LORALinear:
         
         
         
-        
+    
         # x can be a single vector of shape (in_features, 1) 
         # or a batch of data of shape (batch_size, in_features).
     def forward(self, x):
@@ -129,3 +129,114 @@ class LORALinear:
     def get_merged_weights(self):
         # Computes and returns the consolidated matrix: W0 + scaling * (B @ A)
         return self.W0 + (self.scaling * np.dot(self.B, self.A))
+
+
+
+
+
+# ==========================================
+# Testing the LoRA Layer
+# ==========================================
+
+# Create a LoRA layer
+layer = LORALinear(
+    in_features=3,
+    out_features=2,
+    rank=2,
+    alpha=4
+)
+
+print("\n========== LoRA Layer ==========\n")
+
+print("Frozen Weight Matrix W0:")
+print(layer.W0)
+
+print("\nLoRA Matrix A:")
+print(layer.A)
+
+print("\nLoRA Matrix B:")
+print(layer.B)
+
+# Create an input batch
+# batch_size = 2
+# in_features = 3
+
+x = np.array([
+    [1.0, 2.0, 3.0],
+    [4.0, 5.0, 6.0]
+])
+
+print("\nInput X:")
+print(x)
+
+# Forward Pass
+output = layer.forward(x)
+
+print("\nForward Output:")
+print(output)
+
+# Dummy Gradient coming from next layer
+grad_output = np.ones((2, 2))
+
+print("\nGradient from Next Layer:")
+print(grad_output)
+
+# Backward Pass
+layer.backward(grad_output)
+
+print("\nGradient of A:")
+print(layer.grad_A)
+
+print("\nGradient of B:")
+print(layer.grad_B)
+
+# Update Weights
+learning_rate = 0.01
+
+layer.update_weights(learning_rate)
+
+print("\nUpdated Matrix A:")
+print(layer.A)
+
+print("\nUpdated Matrix B:")
+print(layer.B)
+
+# Merge LoRA into W0
+merged = layer.get_merged_weights()
+
+print("\nMerged Weight Matrix:")
+print(merged)
+
+
+
+
+
+# ************************
+# let's test the layer of data  size = 4, input features =8 , output features = 3
+X_train = np.random.randn(4,8)
+Y_target = np.random.randn(4,3)
+
+lora_layer = LORALinear(in_features=8,out_features=3, rank=2,alpha=4.0)
+learning_rate=0.01  # how much parameter change after each update
+
+print("--Training Process--")
+for epoch in range(1,6):   # epoch means one complete pass through training data
+    prediction = lora_layer.forward(X_train)   # this sends the input through the lora layer 
+    error = prediction - Y_target   # calcutate hte erorr prediction -error
+
+    loss = np.mean(0.5* (error*2))
+    print(f"Epoch {epoch} | loss {Loss:6f}") 
+    grad_output = error/X_train.shape[0]
+    
+    
+    lora_layer.backward(grad_output)
+
+    lora_layer.update_weights(learning_rate)
+
+print("weight for deployment")
+
+W_final = lora_layer.get_merged_weights()
+print(f"Original base weights shape:{lora_layer.W0.shape}")
+print(f"Merged downstream weights shape: {W_final.shape}")
+
+
