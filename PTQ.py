@@ -1,19 +1,20 @@
 import numpy as np
 
-# ==========================================
-# 1. CORE QUANTIZATION MATHEMATICS
-# ==========================================
+# CORE QUANTIZATION MATHEMATICS
 
 def calc_scale_and_zp(min_val, max_val, num_bits=8):
-    """Calculates step size (Scale) and origin alignment (Zero-Point)."""
-    qmin, qmax = 0, (2**num_bits) - 1
+    # Calculates step size (Scale) and origin alignment (Zero-Point)
+    qmin, qmax = 0, (2**num_bits) - 1     #qmin and qmax are the min and max integer values that can be represented using a given number of bits - 2^8 = 256 (0-255)
+
     
     # Enforce that 0.0 is perfectly representable in the scale grid
-    min_val = min(min_val, 0.0)
+    min_val = min(min_val, 0.0)   # we use this to make sure that floating point value 0.0 lies within the quantization range
+    # if the data range is [2.45,9.0] and then we find the min_val = min(2.5,0.0) then the minimum is 0
     max_val = max(max_val, 0.0)
     
     if min_val == max_val:
-        return 1.0, 0
+        return 1.0, 0   #this means return scale as 1 nad return zero point as 0
+    # okay 
         
     scale = (max_val - min_val) / (qmax - qmin)
     initial_zp = qmin - (min_val / scale)
