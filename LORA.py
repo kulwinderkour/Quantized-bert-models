@@ -74,12 +74,13 @@ class LORALinear:
         
         # Placeholders to cache inputs during the forward pass for backpropagation
         # During forward pass the model computes xAT During backward pass, we need that same value to calculate gradients. Instead of recomputing, we store it.basically for the caching
-        self.last_x = None
-        self.last_lora_A = None
+
+        self.last_x = None   # we stores teh last input x that comes during forward pass
+        self.last_lora_A = None  # stores the matrix A's intermediate output 
         
         # Gradients
-        self.grad_A = None
-        self.grad_B = None
+        self.grad_A = None   # lora A gradients
+        self.grad_B = None   # lora B graidents
         
         
         
@@ -88,24 +89,25 @@ class LORALinear:
         # or a batch of data of shape (batch_size, in_features).
     def forward(self, x):
 
-        self.last_x = x  # Cache input for backward pass
+        self.last_x = x  # it store the input of forward pass Cache for backward pass
         
         # Standard frozen pathway: h_base = x * W0^T
         base_output = np.dot(x, self.W0.T)
+        #
         
         # LoRA pathway: delta_h = ((x * A^T) * B^T) * scaling
         self.last_lora_A = np.dot(x, self.A.T)  # Cache intermediate state
-        lora_output = np.dot(self.last_lora_A, self.B.T) * self.scaling
-        
+        lora_output = np.dot(self.last_lora_A, self.B.T) * self.scaling   # scailing is class variable that stores the scialing factor
+        # this stores the lora matrix A and B
         # Combined output
         return base_output + lora_output
 
 
-    def backward(self, grad_output):
-    # Computes the analytical gradients for A and B using the chain rule.
+    def backward(self, grad_output): # calcuate the gradient of the lora of A and B uisng chain rule
+        
     # grad_output shape: (batch_size, out_features)
     # Factor the scaling constant directly into the incoming gradient
-        scaled_grad = grad_output * self.scaling
+        scaled_grad = grad_output * self.scaling  # as we have multiply the scailing wiht the output of forward pass and same happens in backward also 
         
         # 1. Gradient for B: dL/dB = (scaled_grad)^T * (x * A^T)
         # Dimensions: (out_features, batch_size) @ (batch_size, rank) -> (out_features, rank)
@@ -122,8 +124,7 @@ class LORALinear:
 
 
     def update_weights(self, lr):
-    #Applies basic Stochastic Gradient Descent (SGD) to update A and B
-        self.A -= lr * self.grad_A
+        self.A -= lr * self.grad_A   # then we use the learnign rate to update the weights 
         self.B -= lr * self.grad_B
 
     def get_merged_weights(self):

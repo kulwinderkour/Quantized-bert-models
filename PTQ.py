@@ -28,34 +28,19 @@ def calc_scale_and_zp(min_val, max_val, num_bits=8):
 def quantize(tensor, scale, zero_point, num_bits=8):
     #Converts continuous 64-bit float numbers into discrete 8-bit integers
     qmin, qmax = 0, (2**num_bits) - 1  #2^num_bits = 2^8 = 256
-    q_tensor = np.round(tensor / scale) + zero_point  # q_tensor is the input function
+    q_tensor = np.round(tensor / scale) + zero_point  # tensor is the input function   q = (x/s) + z
     return np.clip(q_tensor, qmin, qmax).astype(np.uint8) 
  
   # we quantize because we want to reduce the memory
 
 def dequantize(q_tensor, scale, zero_point):  
     # Restores integer matrices back into working float approximations
-    return scale * (q_tensor.astype(np.float32) - zero_point)
+    return scale * (q_tensor.astype(np.float32) - zero_point)   # x^ = scale(x-z)
 # we dequantize because we want to perform calculcations uisng values that approxiamte the original floating point number
 
 
 # 2. INT8 LINEAR LAYER STRUCTURE
-
-class PTQLinearLayer:   #this class represent the fully connected neural network layer
-    def __init__(self, weights, bias):   # self is teh current instance of the class 
-        self.W = weights  # Matrix shape: (out_features, in_features)  self.W are storing the weight matrix
-        self.B = bias     # Matrix shape: (out_features,)
-        
-        # Calibration state flags and memory registers
-        self.is_quantized = False
-        self.act_min = float('inf')   #stores the minimum activation value 
-        self.act_max = float('-inf') # stores the maximum activation value
-        
-        # Quantization variables
-        self.w_scale, self.w_zp = None, None   # store the quantization scale for the weights and zeropoint
-        self.act_scale, self.act_zp = None, None   # act_scale is basically activation scale and activation zeropoint
-
-
+ scale * (q_tensor.astype(np.float32) - zero_point)
 
     def forward(self, X):  # forward performs infernece/ prediction and X represent the current activation matrix
         if not self.is_quantized: 
@@ -90,29 +75,33 @@ class PTQLinearLayer:   #this class represent the fully connected neural network
 
 # 3. PIPELINE EXECUTION   #(pipeline are the basically steps or sequnce of processing stages where the output of the one stage become the input of hte another stage)
 
-if __name__ == "__main__":
+if __name__ == "__main__":   # this behaves like main entry point where we start calling functions
     np.random.seed(42)
     
     # Generate mock tracking data (Imagine this is your text or image dataset batches)
-    # 100 samples total, each sample contains 4 numeric features
-    dataset = np.random.normal(loc=2.0, scale=1.5, size=(100, 4))   #loc is the center of the distribution(mean)
-    calibration_data = dataset[:80]  # First 80 samples to map ranges   
-    evaluation_data = dataset[80:]   # Last 20 samples to verify accuracy  # (for testing)
+    # 100 samples total, each sample contains 4 numeric features 
+    dataset = np.random.normal(loc=2.0, scale=1.5, size=(100, 4))   # loc is the center of the distribution(mean) = 2 so all values must be around 2
     
-    # Initialize a mock pre-trained network layer (Outputs 3 nodes, takes 4 inputs)
-    mock_weights = np.random.uniform(-3.0, 3.0, size=(3, 4))
+    calibration_data = dataset[:80]  # First 80 samples to map ranges    
+    evaluation_data = dataset[80:]   # Last 20 samples to verify accuracy  # (for testing)
+
+    # took a mock pre-trained network layer (Outputs 3 nodes, takes 4 inputs)
+    mock_weights = np.random.uniform(-3.0, 3.0, size=(3, 4))   
     mock_bias = np.random.uniform(-0.5, 0.5, size=(3,))
     
     # Create the model layer instances
-    fp32_layer = PTQLinearLayer(mock_weights, mock_bias)
-    ptq_layer = PTQLinearLayer(mock_weights, mock_bias)
+    fp32_layer = PTQLinearLayer(mock_weights, mock_bias)   # this will store the float32 and bias  this is the original data 
+    ptq_layer = PTQLinearLayer(mock_weights, mock_bias)  # this ptq_layer we are goign to change 
     
-    # STEP 1: Run calibration data to learn activation statistics
-    for batch in calibration_data:
-        _ = ptq_layer.forward(batch.reshape(1, -1))
+    # the we will compare both these lines
+    
+    #  Run calibration data to learn activation statistics
+    for batch in calibration_data:   #take on sample at a time from the calibration_data
+        _ = ptq_layer.forward(batch.reshape(1, -1))    # forward fucntion pass the input to the model this
+        # reshape will convet the 1d neural netowork into hte format expceted by the model  to 1 row and -1 column means(python calculate)
         
-    # STEP 2: Lock down quantization scales based on data profile
-    ptq_layer.finalize_ptq()
+    #  Lock down quantization scales based on data profile
+    ptq_layer.finalize_ptq()       #
     
     # STEP 3: Run evaluation verification comparing FP32 vs INT8 precision
     print("--- PTQ Parameter Configurations ---")
@@ -120,10 +109,13 @@ if __name__ == "__main__":
     print(f"Activation Calibration -> Scale: {ptq_layer.act_scale:.5f} | Zero-Point: {ptq_layer.act_zp}\n")
     
     print("--- Processing Test Dataset Samples ---")
+    
+    
     total_error = 0.0
     
+    
     for sample in evaluation_data:
-        x_in = sample.reshape(1, -1)
+        x_in = sample.reshape(1, -1) 
         
         # Run raw float math pipeline
         out_fp32 = fp32_layer.forward(x_in)
