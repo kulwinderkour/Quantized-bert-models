@@ -14,81 +14,90 @@ def calc_scale_and_zp(min_val, max_val, num_bits=8):
     
     if min_val == max_val:
         return 1.0, 0   #this means return scale as 1 nad return zero point as 0
-    # okay 
+    # okay os why scale as 1  because max_val = 5 and min_val = 5 then 
+    #scale = (max - min)/qmax-qmin = 5-5/255-0 = 0/255 = 0
+    # q = (x/s) + z => x/0   creates divison by zero erro
+    # z = qmin - min_val/scale
         
     scale = (max_val - min_val) / (qmax - qmin)
-    initial_zp = qmin - (min_val / scale)
-    zero_point = int(np.clip(np.round(initial_zp), qmin, qmax))
+    initial_zp = qmin - (min_val / scale)   # 0 - (2/1) = -2 so negative values are not allowed in unit 8 so that's why we take the neutral value as 0
+    zero_point = int(np.clip(np.round(initial_zp), qmin, qmax))   # np.clip generates a values that stays within the range
     
     return scale, zero_point
 
 def quantize(tensor, scale, zero_point, num_bits=8):
-    """Converts continuous 64-bit float numbers into discrete 8-bit integers."""
-    qmin, qmax = 0, (2**num_bits) - 1
-    q_tensor = np.round(tensor / scale) + zero_point
-    return np.clip(q_tensor, qmin, qmax).astype(np.uint8)
+    #Converts continuous 64-bit float numbers into discrete 8-bit integers
+    qmin, qmax = 0, (2**num_bits) - 1  #2^num_bits = 2^8 = 256
+    q_tensor = np.round(tensor / scale) + zero_point  # q_tensor is the input function
+    return np.clip(q_tensor, qmin, qmax).astype(np.uint8) 
+ 
+  # we quantize because we want to reduce the memory
 
-def dequantize(q_tensor, scale, zero_point):
-    """Restores integer matrices back into working float approximations."""
+def dequantize(q_tensor, scale, zero_point):  
+    # Restores integer matrices back into working float approximations
     return scale * (q_tensor.astype(np.float32) - zero_point)
+# we dequantize because we want to perform calculcations uisng values that approxiamte the original floating point number
 
 
-# ==========================================
 # 2. INT8 LINEAR LAYER STRUCTURE
-# ==========================================
 
-class PTQLinearLayer:
-    def __init__(self, weights, bias):
-        self.W = weights  # Matrix shape: (out_features, in_features)
+class PTQLinearLayer:   #this class represent the fully connected neural network layer
+    def __init__(self, weights, bias):   # self is teh current instance of the class 
+        self.W = weights  # Matrix shape: (out_features, in_features)  self.W are storing the weight matrix
         self.B = bias     # Matrix shape: (out_features,)
         
         # Calibration state flags and memory registers
         self.is_quantized = False
-        self.act_min = float('inf')
-        self.act_max = float('-inf')
+        self.act_min = float('inf')   #stores the minimum activation value 
+        self.act_max = float('-inf') # stores the maximum activation value
         
         # Quantization variables
-        self.w_scale, self.w_zp = None, None
-        self.act_scale, self.act_zp = None, None
+        self.w_scale, self.w_zp = None, None   # store the quantization scale for the weights and zeropoint
+        self.act_scale, self.act_zp = None, None   # act_scale is basically activation scale and activation zeropoint
 
-    def forward(self, X):
-        if not self.is_quantized:
+
+
+    def forward(self, X):  # forward performs infernece/ prediction and X represent the current activation matrix
+        if not self.is_quantized: 
             # --- CALIBRATION PHASE ---
             # Track the distribution boundaries of your activation data streams
-            self.act_min = min(self.act_min, np.min(X))
+            self.act_min = min(self.act_min, np.min(X))   
+            # calcautes the minimum activation vlaue
+
             self.act_max = max(self.act_max, np.max(X))
-            return np.dot(X, self.W.T) + self.B
+            # calcautes the max activation vlaue
+
+            return np.dot(X, self.W.T) + self.B   # y = xw +b   np.dot() is used ot perform the dot function between the vecotrs
         else:
             # --- INT8 INFERENCE IN ACTION (Fake Quantization Math) ---
             # 1. Quantize & Dequantize incoming activation input
-            q_X = quantize(X, self.act_scale, self.act_zp)
-            dq_X = dequantize(q_X, self.act_scale, self.act_zp)
+            q_X = quantize(X, self.act_scale, self.act_zp)   #floating point activations are converted to integer
+            dq_X = dequantize(q_X, self.act_scale, self.act_zp)   #back from integer to floating point
             
             # 2. Quantize & Dequantize internal static layer weights
-            q_W = quantize(self.W, self.w_scale, self.w_zp)
-            dq_W = dequantize(q_W, self.w_scale, self.w_zp)
+            q_W = quantize(self.W, self.w_scale, self.w_zp)   # same quanitze the weights floating-point weights are converted into integer 
+            dq_W = dequantize(q_W, self.w_scale, self.w_zp)   # same quanitze the weights floating-point weights are converted into integer 
             
             # 3. Complete structural linear network matrix math
             return np.dot(dq_X, dq_W.T) + self.B
 
-    def finalize_ptq(self):
-        """Processes collected data statistics to lock in INT8 constants."""
-        self.w_scale, self.w_zp = calc_scale_and_zp(np.min(self.W), np.max(self.W))
-        self.act_scale, self.act_zp = calc_scale_and_zp(self.act_min, self.act_max)
+    def finalize_ptq(self):  # this functions is called after predictions has completed 
+        # Processes collected data statistics to lock in INT8 constants
+        self.w_scale, self.w_zp = calc_scale_and_zp(np.min(self.W), np.max(self.W))     # this calcultes the min and max weights  and then find min  and store them to the helper function
+        self.act_scale, self.act_zp = calc_scale_and_zp(self.act_min, self.act_max)    # those collected stats to freeze the final quantization parameters for the activations.
         self.is_quantized = True
 
 
-# ==========================================
-# 3. PIPELINE EXECUTION
-# ==========================================
+# 3. PIPELINE EXECUTION   #(pipeline are the basically steps or sequnce of processing stages where the output of the one stage become the input of hte another stage)
+
 if __name__ == "__main__":
     np.random.seed(42)
     
     # Generate mock tracking data (Imagine this is your text or image dataset batches)
     # 100 samples total, each sample contains 4 numeric features
-    dataset = np.random.normal(loc=2.0, scale=1.5, size=(100, 4))
-    calibration_data = dataset[:80]  # First 80 samples to map ranges
-    evaluation_data = dataset[80:]   # Last 20 samples to verify accuracy
+    dataset = np.random.normal(loc=2.0, scale=1.5, size=(100, 4))   #loc is the center of the distribution(mean)
+    calibration_data = dataset[:80]  # First 80 samples to map ranges   
+    evaluation_data = dataset[80:]   # Last 20 samples to verify accuracy  # (for testing)
     
     # Initialize a mock pre-trained network layer (Outputs 3 nodes, takes 4 inputs)
     mock_weights = np.random.uniform(-3.0, 3.0, size=(3, 4))

@@ -1,1 +1,2 @@
 class is basically userdefined template or blueprint to create objects
+activation function is calcuated before makeing predictions to introduce the non linearity so that the matrix learns the complex data 
