@@ -14,6 +14,7 @@ def calc_scale_and_zp(min_val, max_val, num_bits=8):
     
     if min_val == max_val:
         return 1.0, 0   #this means return scale as 1 nad return zero point as 0
+        # to prevent the division by zero error
     # okay os why scale as 1  because max_val = 5 and min_val = 5 then 
     #scale = (max - min)/qmax-qmin = 5-5/255-0 = 0/255 = 0
     # q = (x/s) + z => x/0   creates divison by zero erro
