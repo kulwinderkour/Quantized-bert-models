@@ -52,8 +52,10 @@ def dequantize(q_tensor, scale, zero_point):
 
             self.act_max = max(self.act_max, np.max(X))
             # calcautes the max activation vlaue
+            
 
             return np.dot(X, self.W.T) + self.B   # y = xw +b   np.dot() is used ot perform the dot function between the vecotrs
+            # np.dot will perform the dot function between vector
         else:
             # --- INT8 INFERENCE IN ACTION (Fake Quantization Math) ---
             # 1. Quantize & Dequantize incoming activation input
