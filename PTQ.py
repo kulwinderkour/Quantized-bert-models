@@ -41,33 +41,33 @@ def dequantize(q_tensor, scale, zero_point):
 
 
 # 2. INT8 LINEAR LAYER STRUCTURE
- scale * (q_tensor.astype(np.float32) - zero_point)
+scale * (q_tensor.astype(np.float32) - zero_point)
 
-    def forward(self, X):  # forward performs infernece/ prediction and X represent the current activation matrix
-        if not self.is_quantized: 
+def forward(self, X):  # forward performs infernece/ prediction and X represent the current activation matrix
+    if not self.is_quantized: 
             # --- CALIBRATION PHASE ---
             # Track the distribution boundaries of your activation data streams
-            self.act_min = min(self.act_min, np.min(X))   
+        self.act_min = min(self.act_min, np.min(X))   
             # calcautes the minimum activation vlaue
 
-            self.act_max = max(self.act_max, np.max(X))
+        self.act_max = max(self.act_max, np.max(X))
             # calcautes the max activation vlaue
             
 
-            return np.dot(X, self.W.T) + self.B   # y = xw +b   np.dot() is used ot perform the dot function between the vecotrs
+        return np.dot(X, self.W.T) + self.B   # y = xw +b   np.dot() is used ot perform the dot function between the vecotrs
             # np.dot will perform the dot function between vector
-        else:
+    else:
             # --- INT8 INFERENCE IN ACTION (Fake Quantization Math) ---
             # 1. Quantize & Dequantize incoming activation input
-            q_X = quantize(X, self.act_scale, self.act_zp)   #floating point activations are converted to integer
-            dq_X = dequantize(q_X, self.act_scale, self.act_zp)   #back from integer to floating point
+        q_X = quantize(X, self.act_scale, self.act_zp)   #floating point activations are converted to integer
+        dq_X = dequantize(q_X, self.act_scale, self.act_zp)   #back from integer to floating point
             
             # 2. Quantize & Dequantize internal static layer weights
-            q_W = quantize(self.W, self.w_scale, self.w_zp)   # same quanitze the weights floating-point weights are converted into integer 
-            dq_W = dequantize(q_W, self.w_scale, self.w_zp)   # same quanitze the weights floating-point weights are converted into integer 
+        q_W = quantize(self.W, self.w_scale, self.w_zp)   # same quanitze the weights floating-point weights are converted into integer 
+        dq_W = dequantize(q_W, self.w_scale, self.w_zp)   # same quanitze the weights floating-point weights are converted into integer 
             
             # 3. Complete structural linear network matrix math
-            return np.dot(dq_X, dq_W.T) + self.B
+        return np.dot(dq_X, dq_W.T) + self.B
 
     def finalize_ptq(self):  # this functions is called after predictions has completed 
         # Processes collected data statistics to lock in INT8 constants
