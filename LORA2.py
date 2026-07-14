@@ -162,18 +162,16 @@ class LORALinear:
         self.grad_B = matrix_multiply(transpose(scaled),  # this is the multiplication of the scaled
                                       self.last_lora)    #output and the last_lora(output of the forward pass)
 
-        grad_intermediate = matrix_multiply(scaled,  # it is the error signal after it passed through matrix B and act as a bridge between A and B 
-                                            self.B)
+        grad_intermediate = matrix_multiply(scaled,  # it is the error signal after it passed through 
+                                            self.B) #matrix B and act as a bridge between A and B
 
         self.grad_A = matrix_multiply(transpose(grad_intermediate),
-                                      self.last_x)
+                                      self.last_x)   
 
-    # --------------------------------------
     # Update
-    # --------------------------------------
 
-    def update(self, lr):
-
+    def update(self, lr):  # this function update the trainable lora matrics  A and B
+         # New Weight= Old Weight− LearningRate × Gradient
         for i in range(len(self.A)):
             for j in range(len(self.A[0])):
                 self.A[i][j] -= lr * self.grad_A[i][j]
@@ -182,9 +180,8 @@ class LORALinear:
             for j in range(len(self.B[0])):
                 self.B[i][j] -= lr * self.grad_B[i][j]
 
-    # --------------------------------------
+   
     # Merge
-    # --------------------------------------
 
     def merged_weights(self):
 
@@ -195,9 +192,7 @@ class LORALinear:
         return matrix_add(self.W0, BA)
 
 
-# ==========================================
 # Generate Training Data
-# ==========================================
 
 random.seed(42)
 
@@ -214,15 +209,14 @@ layer = LORALinear(
 
 learning_rate = 0.01
 
-# ==========================================
+
 # Training
-# ==========================================
 
 for epoch in range(5):
 
-    prediction = layer.forward(X)
+    prediction = layer.forward(X)   #Pass the input X through the LoRA layer and store the output (prediction) in the variable prediction
 
-    error = matrix_subtract(prediction, Y)
+    error = matrix_subtract(prediction, Y)   # error= prediction - result
 
     # Mean Squared Error
 
@@ -233,7 +227,7 @@ for epoch in range(5):
 
     for i in range(rows):
         for j in range(cols):
-            total += error[i][j] * error[i][j]
+            total += error[i][j] * error[i][j]   # square each error and add them error = [-2,1] = (-2)^2 + 1 = 5 (total)
 
     loss = total / (rows * cols)
 
@@ -249,9 +243,8 @@ for epoch in range(5):
 
     layer.update(learning_rate)
 
-# ==========================================
+
 # Final Weights
-# ==========================================
 
 merged = layer.merged_weights()
 

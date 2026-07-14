@@ -16,7 +16,7 @@ def fake_quantize(value, min_val, max_val, bits=8):
     # Calculate zero point
     zero_point = round(qmin - (min_val / scale))
 
-    # Clamp zero point
+    #  zero point
     if zero_point < qmin:
         zero_point = qmin
     elif zero_point > qmax:
@@ -25,7 +25,7 @@ def fake_quantize(value, min_val, max_val, bits=8):
     # Quantize
     q_value = round(value / scale) + zero_point
 
-    # Clamp quantized value
+    #  quantized value
     if q_value < qmin:
         q_value = qmin
     elif q_value > qmax:
