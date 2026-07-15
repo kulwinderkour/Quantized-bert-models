@@ -216,8 +216,7 @@ class QuantizedLinearLayer:
 
         return output
 
-    def backward(self, grad_output):
-
+    def backward(self, grad_output):   #the backward pass 
         input_T = transpose(self.input)
 
         self.dw = matrix_multiply(input_T, grad_output)
