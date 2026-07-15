@@ -229,7 +229,7 @@ class QuantizedLinearLayer:
                 self.db[0][j] += row[j]
 
     def update(self, lr):
-
+        # update using learning rate
         for i in range(len(self.weight)):
             for j in range(len(self.weight[0])):
                 self.weight[i][j] -= lr * self.dw[i][j]
