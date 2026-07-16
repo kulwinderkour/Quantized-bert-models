@@ -217,9 +217,9 @@ class QuantizedLinearLayer:
         return output
 
     def backward(self, grad_output):   #the backward pass 
-        input_T = transpose(self.input)
+        input_T = transpose(self.input) 
 
-        self.dw = matrix_multiply(input_T, grad_output)
+        self.dw = matrix_multiply(input_T, grad_output) # this is the matrix mutiplication of input calcualted above and gradient output produced by the partial detivative of the model's loss or error
 
         self.db = create_matrix(1, len(grad_output[0]))
 
@@ -229,7 +229,8 @@ class QuantizedLinearLayer:
                 self.db[0][j] += row[j]
 
     def update(self, lr):
-        # update using learning rate
+        # update using learning rate as 
+        
         for i in range(len(self.weight)):
             for j in range(len(self.weight[0])):
                 self.weight[i][j] -= lr * self.dw[i][j]
