@@ -194,9 +194,9 @@ class LORALinear:
 
 # Generate Training Data
 
-random.seed(42)
+random.seed(42) 
 
-X = gaussian_matrix(4, 8)
+X = gaussian_matrix(4, 8)   
 
 Y = gaussian_matrix(4, 3)
 
