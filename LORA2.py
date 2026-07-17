@@ -196,11 +196,11 @@ class LORALinear:
 
 random.seed(42) 
 
-X = gaussian_matrix(4, 8)   
+X = gaussian_matrix(4, 8)   # random matrix
 
 Y = gaussian_matrix(4, 3)
 
-layer = LORALinear(
+layer = LORALinear( # function called and stored in a layer variable and pass these parameters
     in_features=8,
     out_features=3,
     rank=2,
