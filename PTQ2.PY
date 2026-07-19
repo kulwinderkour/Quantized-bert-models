@@ -12,7 +12,7 @@ weights = [
 
 num_bits = 8
 
-def find_min_max(data):
+def find_min_max(data):  # defines the floating point range
     minimum = data[0]
     maximum = data[0]
 

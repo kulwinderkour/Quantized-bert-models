@@ -46,7 +46,7 @@ epochs = 5  # one complete pass through the entire training dataset
 # Initial weight
 weight = 0.55
 
-# Calibration range
+# range
 BOUND_MIN = -2.0   # because the mostly floating point range lies near 0 and to make sure the values must between -2 and 2 
 BOUND_MAX = 2.0
 
@@ -64,7 +64,7 @@ print()
 # Quantization-Aware Training
 
 
-for epoch in range(1, epochs + 1):     # this epoch is the hyperparameter suppose epoch=5 range(1,6) 
+for epoch in range(1, epochs + 1):     # this epoch is the hyperparameter one complete step suppose epoch=5 range(1,6) 
     # excluded last item runs for 5 times 1 2 3 4 5
 
     total_loss = 0
@@ -82,20 +82,20 @@ for epoch in range(1, epochs + 1):     # this epoch is the hyperparameter suppos
         y_pred = q_x * q_weight   #pred = x*w
 
         # Loss
-        loss = (y_pred - y_target) * (y_pred - y_target)
+        loss = (y_pred - y_target) * (y_pred - y_target)  
         total_loss += loss
         
         
         # Backward Pass
 
         # dLoss/dPrediction
-        d_pred = 2 * (y_pred - y_target)
+        d_pred = 2 * (y_pred - y_target)  # thsi measures the error
 
     
-        d_weight = d_pred * q_x
+        d_weight = d_pred * q_x     # how much weight cause that erorr
 
         # Gradient Descent
-        weight = weight - learning_rate * d_weight
+        weight = weight - learning_rate * d_weight  # update the weight so that the next prediction must be near to the range
 
     print("Epoch:", epoch)
     print("Total Loss:", round(total_loss, 6))

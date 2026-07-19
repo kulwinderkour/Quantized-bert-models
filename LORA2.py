@@ -113,7 +113,7 @@ def print_matrix(name, matrix):
 
 class LORALinear:
 
-    def __init__(self, in_features, out_features, rank=2, alpha=4):
+    def __init__(self, in_features, out_features, rank=2, alpha=4):  # this is constrcutor
 
         self.in_features = in_features
         self.out_features = out_features
@@ -140,24 +140,25 @@ class LORALinear:
 
     def forward(self, x):
 
-        self.last_x = x
+        self.last_x = x   # store hte input
 
-        base = matrix_multiply(x, transpose(self.W0))   
+        base = matrix_multiply(x, transpose(self.W0))     # X * W0
 
-        self.last_lora = matrix_multiply(x, transpose(self.A))
+        self.last_lora = matrix_multiply(x, transpose(self.A))  #X * A  (input passes through the pretrained weights to produce the base output)
 
-        lora = matrix_multiply(self.last_lora, transpose(self.B))
-
+        lora = matrix_multiply(self.last_lora, transpose(self.B)) # X * B
+        # A and B are mulitplied with input (x) to produce the small adaptations
         lora = scalar_multiply(lora, self.scaling)
+        # Y = X*W0 + α(X * A * B )​ => Y = X(W0 ​+ αBA)​
 
         return matrix_add(base, lora)
 
 
-    # Backward pass
+    # Backward pass  this the learning phase when the model produce an output it will compare the prediction with the correct answer
 
     def backward(self, grad_output):
 
-        scaled = scalar_multiply(grad_output, self.scaling)    # pred =8, result =10 so the erorr is (10-8)^2 = 4 then the derivative of loss wrt ot preidtion (x-y)^2 = 2(pred-result) = 2(8-10) = -2 is the grad output  
+        scaled = scalar_multiply(grad_output, self.scaling)    # pred = 8, result =10 so the erorr is (10-8)^2 = 4 then the derivative of loss wrt ot preidtion (x-y)^2 = 2(pred-result) = 2(8-10) = -2 is the grad output  
 
         self.grad_B = matrix_multiply(transpose(scaled),  # this is the multiplication of the scaled
                                       self.last_lora)    #output and the last_lora(output of the forward pass)

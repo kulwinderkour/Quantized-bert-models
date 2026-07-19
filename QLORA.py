@@ -30,8 +30,11 @@ def quantize_to_nf4(value, scale):   # this function take weights normalize it n
             
     return closest_index
 
+
+
+
 def dequantize_from_nf4(index, scale):
-    """Looks up the NF4 float value using the index and scales it back up."""
+    # Looks up the NF4 float value using the index and scales it back up.
     return NF4_VALUES[index] * scale
 
 
