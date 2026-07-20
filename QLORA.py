@@ -50,7 +50,7 @@ base_weight = 1.85   # this represent the pretrained weight
 
 # Step A: Calculate absolute scale factor for this weight block
 base_scale = abs(base_weight) if abs(base_weight) > 0 else 1e-5 #base scale is the (normalize the weight before quantization)
-
+ 
 # Step B: Quantize it down to a 4-bit index (0-15) and FREEZE IT
 frozen_q_index = quantize_to_nf4(base_weight, base_scale)  #  convert the pretrained weight into 4bit NF4 index
 del base_weight # Delete the variable to simulate memory savings
@@ -62,7 +62,7 @@ lora_A = 0.45
 lora_B = 0.00  # Initializing B to 0 ensures the adapter starts by doing nothing
 
 # Scaling constant applied to LoRA pathway
-lora_scaling = alpha / rank    # 
+lora_scaling = alpha / rank     
 
 # Training dataset (x: input, y: target output)
 training_data = [
