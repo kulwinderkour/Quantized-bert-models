@@ -16,7 +16,8 @@ def fake_quantize(value, min_val, max_val, bits=8):   #this min_val and max_val 
 
     # The safety check prevents division by zero. if max = min 
     zero_point = round(qmin - (min_val / scale))
-    zero_point = max(qmin, min(qmax, zero_point))   # we use this function because sometimes zero_point goes beyond range (0-255) -> min(255,280) = 255 and max(0,255) so the final value will be 280 -> 255
+    zero_point = max(qmin, min(qmax, zero_point))   # we use this 
+    #function because sometimes zero_point goes beyond range (0-255) -> min(255,280) = 255 and max(0,255) so the final value will be 280 -> 255
 
     # zero_point determines which integer corresponds to real value 0.
     # q_value performs quantization (rounding to the nearest integer).
