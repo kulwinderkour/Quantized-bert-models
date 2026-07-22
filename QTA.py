@@ -95,7 +95,9 @@ for epoch in range(1, epochs + 1):   # epoch is one full pass time in training
         weight = weight - (learning_rate * d_weight)  # updating hte weight to reduce the loss
         
     print(f"Epoch {epoch} | Total Loss: {total_loss:.6f} | Master Weight Float: {weight:.4f}")
-
+# print the results 
 print("\n--- Training Complete ---")
 final_quantized_weight = fake_quantize(weight, BOUND_MIN, BOUND_MAX, bits=8)  
 print(f"Final Quantized Weight ready for deployment: {final_quantized_weight:.4f}")
+
+
