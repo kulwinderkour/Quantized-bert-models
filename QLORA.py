@@ -13,10 +13,10 @@ NF4_VALUES = [  # 16 normalized values using NF4 datatype 2^4 = 16  these values
      0.0795803,  0.1609302,  0.2461123,  0.3379152,
      0.4407098,  0.5626170,  0.7229568,  1.0
 ]
-#this is the arraybook
-    def quantize_to_nf4(value, scale):   # this function take weights normalize it nad find the closes value from 16 predefined nf4 values
+
+def quantize_to_nf4(value, scale):   # this function take weights normalize it nad find the closes value from 16 predefined nf4 values
         #Normalizes the value by scale, and finds the closest NF4 index (0 to 15)
-        normalized = value / scale   # suppose value = 0.18 and scale = 0.2 => 0.2/0.18 =  0.9 
+        normalized = value / scale   # suppose value = 0.18 and scale = 0.2 = 0.9
         
         # Find the index of the NF4 value closest to our normalized value
         closest_index = 0
