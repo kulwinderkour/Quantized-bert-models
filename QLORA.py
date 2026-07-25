@@ -28,9 +28,7 @@ def quantize_to_nf4(value, scale):   # this function take weights normalize it n
                 min_distance = distance
                 closest_index = i
                 
-        return closest_index
-
-
+        return closest_index  # returns the closest index
 
 
 def dequantize_from_nf4(index, scale):
