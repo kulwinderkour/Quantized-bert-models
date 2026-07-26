@@ -10,7 +10,7 @@ weights = [
     0.05
 ]
 
-num_bits = 8
+num_bits = 8   #this means 2^8 = 256(0 to 255) map every real number in this range 
 
 def find_min_max(data):  # defines the floating point range
     minimum = data[0]
@@ -22,11 +22,11 @@ def find_min_max(data):  # defines the floating point range
         if value > maximum:
             maximum = value
 
-    return minimum, maximum
+    return minimum, maximum   # this is used for the quality of quantization whihc is entirely depend on true range 
 
 
 # CORE QUANTIZATION MATHEMATICS
-
+    
 def calc_scale_and_zp(min_val, max_val, num_bits):   # min_val = minimum and max_val = maximum
     qmin = 0
     qmax = (2 ** num_bits) - 1  # range will be from 0 to 255 and this 1 integer represent how many floating point 
