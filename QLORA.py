@@ -1,10 +1,9 @@
 import math
 
-# 1. 4-bit NormalFloat (NF4) Quantization Functions
+# 4-bit NormalFloat (NF4) Quantization Functions
 
 
 # NF4 uses 16 specific numbers optimized for standard normal distributions.
-
 
 # This acts as our lookup table.
 NF4_VALUES = [  # 16 normalized values using NF4 datatype 2^4 = 16  these values are placed near to zero using gaussian distribution and then after quantization each normalized weights are replaced by closest value
@@ -16,13 +15,14 @@ NF4_VALUES = [  # 16 normalized values using NF4 datatype 2^4 = 16  these values
 
 def quantize_to_nf4(value, scale):   # this function take weights normalize it nad find the closes value from 16 predefined nf4 values
         #Normalizes the value by scale, and finds the closest NF4 index (0 to 15)
-        normalized = value / scale   # suppose value = 0.18 and scale = 0.2 = 0.9
+        normalized = value / scale   # means scaling the weight down to mkae it in standard range suppose value = 0.18 and scale = 0.2 = 0.9   bring the weigh in range
         
         # Find the index of the NF4 value closest to our normalized value
-        closest_index = 0
-        min_distance = float('inf')  #minimum distance as infinity
+        closest_index = 0    # find the closest to the normalized weight
+        min_distance = float('inf')  #minimum distance as infinity  store the smallest distance
         
-        for i, nf4_val in enumerate(NF4_VALUES):
+        
+        for i, nf4_val in enumerate(NF4_VALUES):    # finding the nearest neighbour search
             distance = abs(normalized - nf4_val)  #how far the current NF4 value is from the normalized weight
             if distance < min_distance:
                 min_distance = distance
@@ -32,14 +32,14 @@ def quantize_to_nf4(value, scale):   # this function take weights normalize it n
 
 
 def dequantize_from_nf4(index, scale):
-    # Looks up the NF4 float value using the index and scales it back up.
+    # NF4 float value using the index and scales it back up.
     return NF4_VALUES[index] * scale
 
 
 # 2. Setup & Hyperparameters
 learning_rate = 0.1
-epochs = 5
-alpha = 2.0  # LoRA scaling hyperparameter
+epochs = 5   #The number of times model has seen the entire training dataset.
+alpha = 2.0  # LoRA scaling hyperparameter   (works on updation)
 rank = 1     # Low rank dimension (using 1 for simplicity)
 
 # --- The "Pre-trained" Base Model Weight ---

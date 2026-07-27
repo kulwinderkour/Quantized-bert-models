@@ -27,7 +27,8 @@ def find_min_max(data):  # defines the floating point range
 
 # CORE QUANTIZATION MATHEMATICS
     
-def calc_scale_and_zp(min_val, max_val, num_bits):   # min_val = minimum and max_val = maximum
+def calc_scale_and_zp(min_val, max_val, num_bits):   # min_val = minimum and max_val = maximum 
+    #scales are the small steps
     qmin = 0
     qmax = (2 ** num_bits) - 1  # range will be from 0 to 255 and this 1 integer represent how many floating point 
 
@@ -42,7 +43,7 @@ def calc_scale_and_zp(min_val, max_val, num_bits):   # min_val = minimum and max
     if min_val == max_val:
         return 1.0, 0  
 
-    scale = (max_val - min_val) / (qmax - qmin)   #scale = (5-5)/(255-0) = 0
+    scale = (max_val - min_val) / (qmax - qmin)   #scale = (5-5)/(255-0) = 0  so make sure return scale as 1
 
     initial_zp = qmin - (min_val / scale)   # initial_zp = 0-(5/0)  ->leads to division by zero error
 
@@ -69,7 +70,7 @@ def quantize(tensor, scale, zero_point, num_bits=8):
     q_tensor = []
 
     for value in tensor:
-        q = round(value / scale) + zero_point
+        q = round(value / scale) + zero_point  
 
         if q < qmin:   # make sure to keep the quantized values inside the range 0 to 255 
             q = qmin  #and q must be greater than 0 and less than 255
@@ -84,7 +85,7 @@ def quantize(tensor, scale, zero_point, num_bits=8):
 # Dequantization
 
 
-def dequantize(q_tensor, scale, zero_point):
+def dequantize(q_tensor, scale, zero_point):    # convert the integer back to floating points
     output = []
 
     for value in q_tensor:
@@ -150,7 +151,7 @@ class LinearLayer:
     def __init__(self, weights, bias):
 
         self.W = weights
-        self.B = bias
+        self.B = bias   # this allows model to shift
 
         self.is_quantized = False
 
@@ -236,7 +237,7 @@ class LinearLayer:
         weight_min, weight_max = find_min_max(self.W)    
         # this will find the smallest and largest weight (-2.1,1.25)
 
-        self.w_scale, self.w_zp = calc_scale_and_zp(
+        self.w_scale, self.w_zp = calc_scale_and_zp(   
             weight_min,
             weight_max,
             num_bits

@@ -86,7 +86,7 @@ for epoch in range(1, epochs + 1):     # this epoch is the hyperparameter one co
         total_loss += loss
         
         
-        # Backward Pass
+        # Backward Pass 
 
         # dLoss/dPrediction
         d_pred = 2 * (y_pred - y_target)  # thsi measures the error

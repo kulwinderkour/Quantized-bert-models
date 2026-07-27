@@ -125,7 +125,7 @@ def quantize_dequantize(weights, bits):
 # 3. SOFTMAX convert the raw logits into probabilties
 
 
-def softmax(logits, temperature):
+def softmax(logits, temperature):   
 
     result = []
 
@@ -160,8 +160,6 @@ def softmax(logits, temperature):
 
 
 
-# 4. KL LOSS + GRADIENT
-
 
 def qad_loss(student_logits, teacher_logits, temperature):
 
@@ -181,12 +179,12 @@ def qad_loss(student_logits, teacher_logits, temperature):
             pt = teacher_prob[i][j]
             ps = student_prob[i][j]
 
-            loss += pt * math.log((pt + 1e-9) / (ps + 1e-9))
+            loss += pt * math.log((pt + 1e-9) / (ps + 1e-9))    # KL LOSS function and 1e-9 is added ot avoid log(0)
 
             gradient[i][j] = (ps - pt) * temperature / batch
 
-    loss = loss / batch
-    loss = loss * temperature * temperature
+    loss = loss / batch    # average loss 
+    loss = loss * temperature * temperature   # to mkae the gradients smaller
 
     return loss, gradient
 
