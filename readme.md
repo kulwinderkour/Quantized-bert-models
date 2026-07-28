@@ -53,3 +53,6 @@ Confusion Matrix (TN  FP / FN  TP):
 Total Execution Time:  1.079 ms
 Avg Latency / Sample:  1.079 µs
 Throughput:            927,042 Inferences/sec
+
+
+3. LORA
