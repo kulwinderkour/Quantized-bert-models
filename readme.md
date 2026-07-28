@@ -20,22 +20,22 @@ activation is the output of the neuron used as the input for the next layer
 
 # DATASET COMPARISONS
 
-1. PTQ
---- FP32 Evaluation Metrics ---
-Accuracy : 0.6621  
-Precision: 0.4696
-Recall   : 0.1602
-Inference Time: 0.0535 seconds
+    1. PTQ
+    --- FP32 Evaluation Metrics ---
+    Accuracy : 0.6621  
+    Precision: 0.4696
+    Recall   : 0.1602
+    Inference Time: 0.0535 seconds
 
---- Quantized (INT8) Evaluation Metrics ---
-Accuracy : 0.6606
-Precision: 0.4638
-Recall   : 0.1617
-Inference Time: 0.3526 seconds
+    --- Quantized (INT8) Evaluation Metrics ---
+    Accuracy : 0.6606
+    Precision: 0.4638
+    Recall   : 0.1617
+    Inference Time: 0.3526 seconds
 
 
-    
-2. QTA 
+        
+    2. QTA 
 
 
 Total Test Samples:    1000
@@ -56,3 +56,54 @@ Throughput:            927,042 Inferences/sec
 
 
 3. LORA
+
+
+--- FP32 Evaluation Metrics ---
+Accuracy : 0.5113
+Precision: 0.5119
+Recall   : 0.5166
+Inference Time: 0.0014 seconds
+
+--- Quantized (INT8) Evaluation Metrics ---
+Accuracy : 0.5107
+Precision: 0.5112
+Recall   : 0.5166
+Inference Time: 0.0012 seconds
+
+
+4. QLORA 
+
+--- Starting QLoRA Fine-Tuning ---
+Base Weight Matrix: 3x8 (Stored in 4-bit NF4)
+LoRA Adapters: A(2x8), B(3x2) in FP32
+
+Epoch  1/10 | Training Loss: 0.038026
+Epoch  2/10 | Training Loss: 0.038026
+Epoch  3/10 | Training Loss: 0.038025
+Epoch  4/10 | Training Loss: 0.038024
+Epoch  5/10 | Training Loss: 0.038024
+Epoch  6/10 | Training Loss: 0.038023
+Epoch  7/10 | Training Loss: 0.038023
+Epoch  8/10 | Training Loss: 0.038022
+Epoch  9/10 | Training Loss: 0.038022
+Epoch 10/10 | Training Loss: 0.038021
+
+--- Evaluating Fine-Tuned Model ---
+
+QLoRA EVALUATION METRICS             
+
+Total Test Predictions: 1500
+
+--- Classification Performance ---
+Accuracy : 0.5127 (51.27%)
+Precision: 0.5133 (51.33%)
+Recall   : 0.5140 (51.40%)
+F1-Score : 0.5136 (51.36%)
+
+Confusion Matrix (TN FP / FN TP):
+ [383  366]
+ [365  386]
+
+--- Inference Time Performance ---
+Total Inference Time: 0.0012 seconds
+Avg Latency / Sample: 2.382 µs
