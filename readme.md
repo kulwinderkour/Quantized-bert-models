@@ -107,3 +107,8 @@ Confusion Matrix (TN FP / FN TP):
 --- Inference Time Performance ---
 Total Inference Time: 0.0012 seconds
 Avg Latency / Sample: 2.382 µs
+
+
+
+5. QAD
+
