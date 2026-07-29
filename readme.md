@@ -112,3 +112,34 @@ Avg Latency / Sample: 2.382 µs
 
 5. QAD
 
+Training QAD...
+
+Epoch 1 Loss = 0.000721
+Epoch 2 Loss = 0.000719
+Epoch 3 Loss = 0.000718
+Epoch 4 Loss = 0.000717
+Epoch 5 Loss = 0.000716
+Epoch 6 Loss = 0.000716
+Epoch 7 Loss = 0.000716
+Epoch 8 Loss = 0.000233
+Epoch 9 Loss = 0.00023
+Epoch 10 Loss = 0.000228
+
+--- Evaluating Fine-Tuned Student Model ---
+    QAD EVALUATION METRICS
+Total Predictions Assessed: 12
+
+--- Classification Performance ---
+Accuracy : 1.0000 (100.00%)
+Precision: 1.0000 (100.00%)
+Recall   : 1.0000 (100.00%)
+F1-Score : 1.0000 (100.00%)
+
+Confusion Matrix (TN FP / FN TP):
+ [5  0]
+ [0  7]
+
+--- Inference Time Performance ---
+Total Inference Time: 0.000161 seconds
+Avg Latency / Sample: 40.175 µs
+
