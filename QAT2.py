@@ -1,4 +1,4 @@
-# Fake Quantization Function
+# Fake Quantization Function used to give effects of dequantization
 
 def fake_quantize(value, min_val, max_val, bits=8):
 
