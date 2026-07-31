@@ -19,6 +19,8 @@ activation is the output of the neuron used as the input for the next layer
 
 
 # DATASET COMPARISONS
+dataset comaprisons of PTQ,QAT, LoRA, QLoRA and QAD 
+
 
     1. PTQ
     --- FP32 Evaluation Metrics ---
@@ -144,3 +146,4 @@ Total Inference Time: 0.000161 seconds
 Avg Latency / Sample: 40.175 µs
 
   
+
