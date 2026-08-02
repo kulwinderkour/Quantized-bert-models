@@ -13,6 +13,7 @@ scale is how much one integer represents in floating point
 zero point shifts the mapping 
 
 activation is the output of the neuron used as the input for the next layer
+is present
 
 
 
