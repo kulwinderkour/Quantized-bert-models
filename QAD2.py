@@ -36,7 +36,7 @@ def transpose(matrix):
             result[j][i] = matrix[i][j]
 
     return result
-
+# these functions are going to be used later
 
 def matrix_multiply(A, B):
 

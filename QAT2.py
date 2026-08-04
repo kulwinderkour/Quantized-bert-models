@@ -9,7 +9,7 @@ def fake_quantize(value, min_val, max_val, bits=8):
     # Calculate scale
     scale = (max_val - min_val) / (qmax - qmin)
 
-    # Prevent division by zero   that's why scale is initalized as 1 or very small value
+    # Prevent division by zero   that's why scale is initalized as 1 or very small value    
     
     if scale == 0:
         scale = 0.00000001
