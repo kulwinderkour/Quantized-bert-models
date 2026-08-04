@@ -56,7 +56,7 @@ def matrix_multiply(A, B):
             result[i][j] = total
 
     return result
-
+# this will add bias 
 
 def add_bias(matrix, bias):
 
