@@ -155,7 +155,6 @@ def softmax(logits, temperature):
             probs.append(e / total)
 
         result.append(probs)
-
     return result
 
 
