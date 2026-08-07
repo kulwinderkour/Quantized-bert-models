@@ -157,7 +157,7 @@ def softmax(logits, temperature):
         result.append(probs)
     return result
 
-
+# return the result
 
 
 def qad_loss(student_logits, teacher_logits, temperature):
