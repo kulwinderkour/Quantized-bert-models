@@ -187,7 +187,7 @@ def qad_loss(student_logits, teacher_logits, temperature):
 
     return loss, gradient
 
-
+#this will return the loss calculated
 
 # 5. QUANTIZED LINEAR LAYER
 
