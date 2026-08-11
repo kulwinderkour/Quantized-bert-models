@@ -284,3 +284,5 @@ for epoch in range(10):
     student.update(learning_rate)
 
     print("Epoch", epoch + 1, "Loss =", round(loss, 6))
+
+    # prints the result
