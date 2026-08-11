@@ -236,7 +236,7 @@ class QuantizedLinearLayer:
             self.bias[0][j] -= lr * self.db[0][j]
 
 
-
+#quantized layer updated 
 
 # 6. TRAINING
 
