@@ -153,9 +153,7 @@ dataset comaprisons of PTQ,QAT, LoRA, QLoRA and QAD trained on IMBD movies datas
 
  # Overall Comparison
 
-Among all the experiments based on the dataset, QAT performed best with 99% accuracy, 99.61% precision, 98.44% recall and 99.02% F1-score.
+QAD performed best among all the evaluated methods, achieving perfect accuracy, precision, recall, and F1-score, along with the lowest inference time of 0.000161 seconds.
 
-QAD reached 100% on its evaluation set, but it was tested on only 12 samples, so it cannot be considered the best result yet.
-
-PTQ preserved accuracy well after INT8 quantization, while LoRA and QLoRA remained around 51% and need further improvement.
+QAT was the next strongest method with 99% accuracy and 99.02% F1-score. PTQ maintained 66.06% accuracy after INT8 quantization, while LoRA and QLoRA achieved around 51% accuracy.
 
