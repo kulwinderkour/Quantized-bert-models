@@ -149,5 +149,13 @@ dataset comaprisons of PTQ,QAT, LoRA, QLoRA and QAD trained on IMBD movies datas
     Total Inference Time: 0.000161 seconds
     Avg Latency / Sample: 40.175 µs
 
-  
+
+
+ # Overall Comparison
+
+Among all the experiments based on the dataset, QAT performed best with 99% accuracy, 99.61% precision, 98.44% recall and 99.02% F1-score.
+
+QAD reached 100% on its evaluation set, but it was tested on only 12 samples, so it cannot be considered the best result yet.
+
+PTQ preserved accuracy well after INT8 quantization, while LoRA and QLoRA remained around 51% and need further improvement.
 
