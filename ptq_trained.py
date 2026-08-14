@@ -17,7 +17,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score
 # ----------------------------------------
 
 
-
+# this will find the min and max range of the int 
 def find_min_max(data):
     minimum = min(data)
     maximum = max(data)
