@@ -1,6 +1,6 @@
+#this trained model contain the libraries of the scikit learn
 import sys
 import platform
-
 # Bypass broken WMI lookup in Python 3.14 on Windows
 platform.machine = lambda: "AMD64" if sys.maxsize > 2**31 - 1 else "x86"
 
