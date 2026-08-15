@@ -22,8 +22,9 @@ def find_min_max(data):
     minimum = min(data)
     maximum = max(data)
     return minimum, maximum
-
+# return the maximum and minimum
 def calc_scale_and_zp(min_val, max_val, num_bits=8):
+    # calcuate the scale and zero point 
     qmin = 0
     qmax = (2 ** num_bits) - 1
 
