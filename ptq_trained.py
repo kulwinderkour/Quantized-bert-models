@@ -34,7 +34,7 @@ def calc_scale_and_zp(min_val, max_val, num_bits=8):
         max_val = 0.0
 
     if min_val == max_val:
-        return 1.0, 0
+        return 1.0, 0   # return the scale as 1 to avoid the zero divison erorr 
 
     scale = (max_val - min_val) / (qmax - qmin)
     initial_zp = qmin - (min_val / scale)
