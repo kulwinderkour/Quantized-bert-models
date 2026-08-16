@@ -58,7 +58,7 @@ def quantize(tensor, scale, zero_point, num_bits=8):
         elif q > qmax:
             q = qmax
         q_tensor.append(int(q))
-    return q_tensor
+    return q_tensor   #this will return the quantized value
 
 def dequantize(q_tensor, scale, zero_point):
     return [scale * (val - zero_point) for val in q_tensor]
