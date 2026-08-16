@@ -38,7 +38,7 @@ def calc_scale_and_zp(min_val, max_val, num_bits=8):
 
     scale = (max_val - min_val) / (qmax - qmin)
     initial_zp = qmin - (min_val / scale)
-    zero_point = round(initial_zp)
+    zero_point = round(initial_zp)   # zero point formula using round of initial zero point
 
     if zero_point < qmin:
         zero_point = qmin
