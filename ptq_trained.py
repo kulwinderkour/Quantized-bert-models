@@ -12,9 +12,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 
-# ----------------------------------------
+
 # 1. CORE QUANTIZATION UTILITIES
-# ----------------------------------------
+
 
 
 # this will find the min and max range of the int 
@@ -66,9 +66,9 @@ def dequantize(q_tensor, scale, zero_point):
 def sigmoid(z):
     return 1.0 / (1.0 + math.exp(-max(min(z, 500), -500)))
 
-# ----------------------------------------
+
 # 2. LINEAR LAYER WITH TRAINING & PTQ
-# ----------------------------------------
+
 
 class QuantizedLinearClassifier:
     def __init__(self, input_dim):
@@ -141,10 +141,11 @@ class QuantizedLinearClassifier:
             preds.append(1 if prob >= 0.5 else 0)
         elapsed_time = time.perf_counter() - start_time
         return preds, elapsed_time
+    #this will quantizer the single layer 
 
-# ----------------------------------------
+
 # 3. DATA PREPROCESSING & RUN SCRIPT
-# ----------------------------------------
+
 
 # 1. Load Data
 df = pd.read_csv('imdb_movies.csv')
