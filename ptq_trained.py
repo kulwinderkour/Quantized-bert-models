@@ -126,6 +126,8 @@ class QuantizedLinearClassifier:
 
         training_time = time.perf_counter() - start_time
         return training_time
+    
+    #single quantized layer 
 
     def finalize_ptq(self, num_bits=8):
         weight_min, weight_max = find_min_max(self.W)
@@ -141,7 +143,7 @@ class QuantizedLinearClassifier:
             preds.append(1 if prob >= 0.5 else 0)
         elapsed_time = time.perf_counter() - start_time
         return preds, elapsed_time
-    #this will quantizer the single layer 
+    #finalize ptq 
 
 
 # 3. DATA PREPROCESSING & RUN SCRIPT
