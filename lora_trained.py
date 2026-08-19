@@ -1,12 +1,13 @@
 import random
 import time
 
-# ------------------------------------
+
 # QUANTIZATION & MATRIX UTILITIES
-# ------------------------------------
+
 
 def fake_quantize(value, min_val=-2.0, max_val=2.0, bits=8):
-    qmin = -(2 ** (bits - 1))
+    
+    qmin = -(2 ** (bits - 1))   # range from 0 to 255
     qmax = (2 ** (bits - 1)) - 1
     scale = (max_val - min_val) / (qmax - qmin) if max_val != min_val else 1e-8
     zero_point = round(qmin - (min_val / scale))
@@ -76,9 +77,9 @@ def matrix_subtract(A, B):
             result[i][j] = A[i][j] - B[i][j]
     return result
 
-# ------------------------------------
+
 # LORA LAYER
-# ------------------------------------
+
 
 class LORALinear:
     def __init__(self, in_features, out_features, rank=2, alpha=4):
@@ -125,9 +126,9 @@ class LORALinear:
         BA = scalar_multiply(BA, self.scaling)
         return matrix_add(self.W0, BA)
 
-# ------------------------------------
+
 # METRICS COMPUTATION (CLASSIFICATION)
-# ------------------------------------
+
 
 def evaluate_performance(weights, X_data, Y_data):
     tp = fp = tn = fn = 0
@@ -166,9 +167,9 @@ def evaluate_performance(weights, X_data, Y_data):
     return accuracy, precision, recall, inference_time
 
 
-# ------------------------------------
+
 # DATASET & LORA TRAINING
-# ------------------------------------
+
 
 random.seed(42)
 
@@ -203,9 +204,9 @@ for epoch in range(15):
     layer.update(learning_rate)
 
 
-# ------------------------------------
+
 # EVALUATION (FP32 vs INT8)
-# ------------------------------------
+
 
 # 1. FP32 Merged Weights Evaluation
 fp32_weights = layer.merged_weights()
