@@ -30,8 +30,10 @@ def quantize_matrix(matrix, min_val=-2.0, max_val=2.0):
 def create_zero_matrix(rows, cols):
     return [[0.0 for _ in range(cols)] for _ in range(rows)]
 
+
 def gaussian_matrix(rows, cols, std=0.1):
     return [[random.gauss(0, std) for _ in range(cols)] for _ in range(rows)]
+#this will return the gaussian matrix 
 
 def transpose(matrix):
     rows, cols = len(matrix), len(matrix[0])
