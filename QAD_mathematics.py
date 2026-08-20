@@ -224,6 +224,7 @@ class QuantizedLinearLayer:
 
             for j in range(len(row)):
                 self.db[0][j] += row[j]
+# this returns the backward propogation of the mod
 
     def update(self, lr):
         # update using learning rate as 
