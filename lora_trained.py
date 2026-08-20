@@ -54,6 +54,7 @@ def matrix_multiply(A, B):
                 total += A[i][k] * B[k][j]
             result[i][j] = total
     return result
+# return the dot product of two matrics 
 
 def matrix_add(A, B):
     rows, cols = len(A), len(A[0])
