@@ -134,7 +134,7 @@ class QuantizedLinearClassifier:
         self.w_scale, self.w_zp = calc_scale_and_zp(weight_min, weight_max, num_bits)
         self.act_scale, self.act_zp = calc_scale_and_zp(self.act_min, self.act_max, num_bits)
         self.is_quantized = True
-
+ #finalize the ptq quantized layer 
     def predict(self, X):
         start_time = time.perf_counter()
         preds = []
