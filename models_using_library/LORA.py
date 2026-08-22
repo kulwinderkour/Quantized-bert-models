@@ -13,12 +13,13 @@ def gaussain_matrix(rows,cols,std=0.1):
 
 def matrix_multiplication(A,B):
     return np.dot(A,B)
+# use the dot product for the two matrix multiplication
 
 def transpose(M):
     return M.T
 
 
-zero_matrix = create_zero_matrix(2,3)
+zero_matrix = create_zero_matrix(2,3)  # initalize the zero matrix with 2 rows nad 3 columns 
 print("Zero matrix:\n")
 print(zero_matrix)
 print("\n")
