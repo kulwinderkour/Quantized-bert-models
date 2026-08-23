@@ -1,5 +1,5 @@
 # activation function
-is calcuated before makeing predictions to introduce the non linearity so that the matrix learns the complex data 
+Thr Activation function is calcuated before makeing predictions to introduce the non linearity so that the matrix learns the complex data 
 
 # calibration
 is the prediction and check how much model aligns with the real results
