@@ -22,7 +22,7 @@ def transpose(M):
 zero_matrix = create_zero_matrix(2,3)  # initalize the zero matrix with 2 rows nad 3 columns 
 print("Zero matrix:\n")
 print(zero_matrix)
-print("\n")
+print("\n") 
 
 # create two gaussian distribution
 

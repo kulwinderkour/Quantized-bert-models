@@ -51,8 +51,8 @@ class QuantizedLinearLayer:
         else:
             w_sim = self.weight   #other wise no quantization
             
-        return np.dot(x, w_sim) + self.bias
-
+        return np.dot(x, w_sim) + self.bias     #this is the forward layer
+    
     def backward(self, grad_output):
         # Using Straight-Through Estimator (STE): 
         # The gradient passes through the quantization step unaffected.
