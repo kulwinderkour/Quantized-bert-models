@@ -12,7 +12,7 @@ def create_matrix(rows, cols, value=0.0):
         for j in range(cols):
             row.append(value)
         matrix.append(row)
-    return matrix
+    return matrix   #this will create a matrix and then initalize B with 0 
 
 
 def random_matrix(rows, cols):
