@@ -11,7 +11,7 @@ NF4_VALUES = [  # 16 normalized values using NF4 datatype 2^4 = 16  these values
     -0.2844414, -0.1847734, -0.0910500,  0.0,
      0.0795803,  0.1609302,  0.2461123,  0.3379152,
      0.4407098,  0.5626170,  0.7229568,  1.0
-]
+]    # sample weights 
 
 def quantize_to_nf4(value, scale):   # this function take weights normalize it nad find the closes value from 16 predefined nf4 values
         #Normalizes the value by scale, and finds the closest NF4 index (0 to 15)

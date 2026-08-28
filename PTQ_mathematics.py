@@ -9,6 +9,7 @@ weights = [
     -1.42,
     0.05
 ]
+# SAMPLE WEIGHTS 
 
 num_bits = 8   #this means 2^8 = 256(0 to 255) map every real number in this range 
 
