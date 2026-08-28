@@ -103,7 +103,7 @@ def compute_qad_loss_and_grad(student_logits, teacher_logits, temperature=2.0):
 # 4. RUNNING THE QAD TRAINING LOOP
 # =====================================================================
 if __name__ == "__main__":
-    np.random.seed(42)
+    np.random.seed(42)    #this is the random state 42  as a convention
     
     # Hyperparameters
     batch_size = 4
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     student = QuantizedLinearLayer(in_features, out_features, num_bits=4)
     # Give them identical starting weights to clearly trace accuracy recovery
     student.weight = teacher.weight.copy()
-    student.bias = teacher.bias.copy()
+    student.bias = teacher.bias.copy()    
 
     print("--- Initial Discrepancy (Due to 4-bit Quantization Error) ---")
     t_logits_init = teacher.forward(X)
