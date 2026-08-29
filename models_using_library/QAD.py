@@ -148,4 +148,4 @@ if __name__ == "__main__":
         # Update full-precision student weights to absorb/counteract quantization noise
         student.update_weights(learning_rate)
         
-        print(f"Epoch {epoch}/{epochs} -> QAD Loss: {loss:.6f}")
+        print(f"Epoch {epoch}/{epochs} -> QAD Loss: {loss:.6f}")     # this will print the calculated QAD loss
