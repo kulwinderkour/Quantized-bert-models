@@ -3,7 +3,7 @@ import numpy as np
 # 1. QUANTIZATION UTILITIES (STE & Symmetric Quantization)
 
 
-def quantize_dequantize(x, num_bits=4):
+def quantize_dequantize(x, num_bits=4):     #quantize equation
     """
     Simulates fake quantization (Symmetric).
     Maps float to discrete integer bins, then scales it back to float.
