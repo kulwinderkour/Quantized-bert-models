@@ -24,11 +24,11 @@ def quantize_dequantize(x, num_bits=4):     #quantize equation
     q_x = np.clip(q_x, qmin, qmax)
     dq_x = q_x * scale
     
-    return dq_x
+    return dq_x 
 
-# =====================================================================
-# 2. CUSTOM LAYER WITH BACKPROP & FAKE QUANTIZATION
-# =====================================================================
+
+# 2. CUSTOM LAYER WITH BACKPROP & FAKE QUANTIZATION(dequantization)
+
 class QuantizedLinearLayer:
     def __init__(self, in_features, out_features, num_bits=4):
         # Initialize full-precision weights
@@ -67,9 +67,9 @@ class QuantizedLinearLayer:
         self.weight -= lr * self.dw
         self.bias -= lr * self.db
 
-# =====================================================================
-# 3. SOFTMAX, TEMPERATURE SCALING, & KL DIVERGENCE LOSS
-# =====================================================================
+
+# 3. SOFTMAx, TEMPERATURE SCALING(for softening), & KL DIVERGENCE LOSS(calcuate loss)
+
 def softmax(logits, temperature=1.0):
     """Computes softmax probabilities with temperature scaling."""
     scaled_logits = logits / temperature
@@ -99,9 +99,9 @@ def compute_qad_loss_and_grad(student_logits, teacher_logits, temperature=2.0):
     
     return scaled_loss, grad_logits
 
-# =====================================================================
+
 # 4. RUNNING THE QAD TRAINING LOOP
-# =====================================================================
+
 if __name__ == "__main__":
     np.random.seed(42)    #this is the random state 42  as a convention
     
