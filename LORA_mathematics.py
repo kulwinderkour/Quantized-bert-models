@@ -1,9 +1,9 @@
-import random
+import random    # for generating the random numbers    
 
 
 # MATRIX OPERATIONS 
 
-def create_zero_matrix(rows, cols):   # we will initalize the matrix
+def create_zero_matrix(rows, cols):   # we will initalize the zero matrix
     matrix = []
     for i in range(rows):
         row = []
