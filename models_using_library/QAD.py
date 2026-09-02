@@ -107,7 +107,7 @@ if __name__ == "__main__":
     
     # Hyperparameters
     batch_size = 4
-    in_features = 8
+    in_features = 8 # number of input features 
     out_features = 3  # e.g., a 3-class classification problem
     learning_rate = 0.1
     temperature = 2.0

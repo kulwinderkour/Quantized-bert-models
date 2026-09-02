@@ -1,9 +1,9 @@
 import random
 import time
 
-# =====================================================================
+
 # 1. PURE PYTHON METRICS (NO SKLEARN DEPENDENCY)
-# =====================================================================
+
 
 def compute_metrics(y_true, y_pred):
     tp = fp = tn = fn = 0
@@ -26,9 +26,9 @@ def compute_metrics(y_true, y_pred):
     return accuracy, precision, recall, f1, [[tn, fp], [fn, tp]]
 
 
-# =====================================================================
+
 # 2. 4-BIT NORMALFLOAT (NF4) QUANTIZATION ENGINE
-# =====================================================================
+
 
 NF4_VALUES = [
     -1.0, -0.6961928, -0.5250105, -0.3949175,
@@ -69,9 +69,9 @@ def dequantize_matrix_from_nf4(q_matrix, scales):
     return fp32_matrix
 
 
-# =====================================================================
+
 # 3. MATRIX OPERATION UTILITIES
-# =====================================================================
+
 
 def create_zero_matrix(rows, cols):
     return [[0.0 for _ in range(cols)] for _ in range(rows)]
@@ -112,9 +112,9 @@ def scalar_multiply(matrix, scalar):
     return [[matrix[i][j] * scalar for j in range(cols)] for i in range(rows)]
 
 
-# =====================================================================
+
 # 4. QLORA LINEAR LAYER CLASS
-# =====================================================================
+
 
 class QLORALinear:
     def __init__(self, in_features, out_features, rank=2, alpha=4):
@@ -169,9 +169,9 @@ class QLORALinear:
         return matrix_add(W0_fp32, BA)
 
 
-# =====================================================================
+
 # 5. TRAINING & EVALUATION PIPELINE
-# =====================================================================
+
 
 random.seed(42)
 
@@ -209,9 +209,9 @@ for epoch in range(1, epochs + 1):
     print(f"Epoch {epoch:2d}/{epochs} | Training Loss: {avg_loss:.6f}")
 
 
-# =====================================================================
+
 # 6. EVALUATION METRICS
-# =====================================================================
+
 
 print("\n--- Evaluating Fine-Tuned Model ---")
 
@@ -237,9 +237,10 @@ for i in range(len(Y_train)):
 
 acc, prec, rec, f1, cm = compute_metrics(y_true_binary, y_pred_binary)
 
-print("\n==================================================")
+
+
 print("             QLoRA EVALUATION METRICS             ")
-print("==================================================")
+
 print(f"Total Test Predictions: {len(y_true_binary)}")
 print("\n--- Classification Performance ---")
 print(f"Accuracy : {acc:.4f} ({acc * 100:.2f}%)")
@@ -253,4 +254,3 @@ print(f" [{cm[0][0]}  {cm[0][1]}]\n [{cm[1][0]}  {cm[1][1]}]")
 print("\n--- Inference Time Performance ---")
 print(f"Total Inference Time: {total_inference_time:.4f} seconds")
 print(f"Avg Latency / Sample: {avg_latency_us:.3f} µs")
-print("==================================================")
