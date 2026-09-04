@@ -241,7 +241,7 @@ acc, prec, rec, f1, cm = compute_metrics(y_true_binary, y_pred_binary)
 
 print("             QLoRA EVALUATION METRICS             ")
 
-print(f"Total Test Predictions: {len(y_true_binary)}")
+print(f"Total Test Predictions: {len(y_true_binary)}")   # total test predictions predicted by model
 print("\n--- Classification Performance ---")
 print(f"Accuracy : {acc:.4f} ({acc * 100:.2f}%)")
 print(f"Precision: {prec:.4f} ({prec * 100:.2f}%)")

@@ -64,7 +64,7 @@ def calc_scale_and_zp(min_val, max_val, num_bits):   # min_val = minimum and max
 # Quantization
 
 
-def quantize(tensor, scale, zero_point, num_bits=8):
+def quantize(tensor, scale, zero_point, num_bits=8):  # quantization function
     qmin = 0
     qmax = (2 ** num_bits) - 1   #should be from 0 to 255
 
