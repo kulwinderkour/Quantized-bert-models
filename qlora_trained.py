@@ -184,7 +184,7 @@ Y_train = gaussian_matrix(num_samples, out_dim)
 
 qlora_layer = QLORALinear(in_features=in_dim, out_features=out_dim, rank=2, alpha=4)
 learning_rate = 0.02
-epochs = 10
+epochs = 10    # 10 period of time 
 
 print("--- Starting QLoRA Fine-Tuning ---")
 print(f"Base Weight Matrix: {out_dim}x{in_dim} (Stored in 4-bit NF4)")
