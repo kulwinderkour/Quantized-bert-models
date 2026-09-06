@@ -37,7 +37,7 @@ NF4_VALUES = [
      0.4407098,  0.5626170,  0.7229568,  1.0
 ]
 
-def quantize_val_to_nf4(value, scale):
+def quantize_val_to_nf4(value, scale):   # convert from quantized value to  nf4 
     normalized = value / scale if scale != 0 else 0.0
     closest_index = 0
     min_dist = float('inf')
