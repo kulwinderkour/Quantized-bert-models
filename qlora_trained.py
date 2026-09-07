@@ -30,7 +30,7 @@ def compute_metrics(y_true, y_pred):
 # 2. 4-BIT NORMALFLOAT (NF4) QUANTIZATION ENGINE
 
 
-NF4_VALUES = [
+NF4_VALUES = [    # random nf4 values
     -1.0, -0.6961928, -0.5250105, -0.3949175,
     -0.2844414, -0.1847734, -0.0910500,  0.0,
      0.0795803,  0.1609302,  0.2461123,  0.3379152,
