@@ -253,4 +253,5 @@ print(f" [{cm[0][0]}  {cm[0][1]}]\n [{cm[1][0]}  {cm[1][1]}]")
 
 print("\n--- Inference Time Performance ---")
 print(f"Total Inference Time: {total_inference_time:.4f} seconds")
-print(f"Avg Latency / Sample: {avg_latency_us:.3f} µs")
+print(f"Avg Latency / Sample: {avg_latency_us:.3f} µs")   # this will print the average latency 
+
