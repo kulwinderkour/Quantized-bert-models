@@ -95,7 +95,7 @@ def dequantize(q_tensor, scale, zero_point):    # convert the integer back to fl
     return output
 
 
-# Main Program
+# Main Program used for the minimum and maximum
 
 
 minimum, maximum = find_min_max(weights)
