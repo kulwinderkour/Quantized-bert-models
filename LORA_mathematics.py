@@ -27,7 +27,7 @@ def transpose(matrix):    # transpose is used in gradients and matrix mutiplicat
     rows = len(matrix)   
     cols = len(matrix[0])
 
-    result = create_zero_matrix(cols, rows)
+    result = create_zero_matrix(cols, rows)  #create matrix of zero fucntion called 
 
     for i in range(rows):
         for j in range(cols):
