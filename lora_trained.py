@@ -14,7 +14,7 @@ def fake_quantize(value, min_val=-2.0, max_val=2.0, bits=8):
     zero_point = max(qmin, min(qmax, zero_point))
 
     q_value = round(value / scale) + zero_point
-    q_value = max(qmin, min(qmax, q_value))
+    q_value = max(qmin, min(qmax, q_value))     # calculates the quantization max and min value 
 
     return (q_value - zero_point) * scale
 
