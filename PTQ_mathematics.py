@@ -119,9 +119,9 @@ dequantized_weights = dequantize(
     zero_point
 )
 
-# ----------------------------------------
+
 # Display Results
-# ----------------------------------------
+
 
 print("Original Weights")
 print(weights)
@@ -143,9 +143,9 @@ print(dequantized_weights)
 # print all the results 
 
 
-# ----------------------------------------
+
 # INT8 Linear Layer (PTQ)
-# ----------------------------------------
+
 
 class LinearLayer:
 
@@ -166,9 +166,8 @@ class LinearLayer:
         self.act_zp = 0   # to shift inside the range (0-255)
 
 
-    # ----------------------------------------
+    
     # Forward Pass
-    # ----------------------------------------
  
     def forward(self, X):  ## X = [0.4, -0.8, 1.5]  min = -0.8 and max 1.5
        
@@ -229,10 +228,8 @@ class LinearLayer:
             return output
 
 
-    # ----------------------------------------
+    
     # Finalize PTQ
-    # ----------------------------------------
-
     def finalize_ptq(self):  #self.W = [0.15, -0.82, 1.25, -2.1, 0.73]
 
         weight_min, weight_max = find_min_max(self.W)    
@@ -253,9 +250,9 @@ class LinearLayer:
         self.is_quantized = True   # this means that the model is ready to use quantiztion
 
 
-# ----------------------------------------
-# Example
-# ----------------------------------------
+
+# Sample weights 
+
 
 layer = LinearLayer(
     weights=[0.4, -0.6, 0.8],
