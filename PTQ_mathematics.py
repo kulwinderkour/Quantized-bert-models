@@ -268,3 +268,4 @@ layer.finalize_ptq()
 
 print("\nQuantized Output")
 print(layer.forward(X))
+# print the results 
