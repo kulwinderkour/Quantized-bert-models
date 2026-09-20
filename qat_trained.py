@@ -2,9 +2,9 @@ import random
 import time
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
-# -----------------------------
+
 # 1. Fake Quantization & Model Infrastructure
-# -----------------------------
+
 def fake_quantize(value, min_val, max_val, bits=8):
     qmin = -(2 ** (bits - 1))
     qmax = (2 ** (bits - 1)) - 1
@@ -28,9 +28,9 @@ def generate_dataset(num_samples=500, true_slope=2.0, noise_std=0.05, seed=42):
         data.append({"x": x, "y": y})
     return data
 
-# -----------------------------
+
 # 2. Setup Data & Trained Weight
-# -----------------------------
+
 dataset = generate_dataset(num_samples=1000)
 BOUND_MIN = min(d["x"] for d in dataset)
 BOUND_MAX = max(d["x"] for d in dataset)
@@ -38,9 +38,9 @@ BOUND_MAX = max(d["x"] for d in dataset)
 # Final INT8 Fake-Quantized Weight obtained after QAT training
 quantized_weight = 1.99824  # Near true_slope=2.0
 
-# -----------------------------
+
 # 3. Measurement: Accuracy, Precision, Recall & Inference Latency
-# -----------------------------
+
 y_true_binary = []
 y_pred_binary = []
 
@@ -78,9 +78,9 @@ rec = recall_score(y_true_binary, y_pred_binary)
 f1 = f1_score(y_true_binary, y_pred_binary)
 cm = confusion_matrix(y_true_binary, y_pred_binary)
 
-# -----------------------------
+
 # 4. Results
-# -----------------------------
+
 print("==================================================")
 print("             QUANTIZED MODEL METRICS              ")
 print("==================================================")
