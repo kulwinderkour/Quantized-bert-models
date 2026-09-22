@@ -81,9 +81,9 @@ cm = confusion_matrix(y_true_binary, y_pred_binary)
 
 # 4. Results
 
-print("==================================================")
+
 print("             QUANTIZED MODEL METRICS              ")
-print("==================================================")
+
 print(f"Total Test Samples:    {total_samples}")
 print("--- Classification Performance ---")
 print(f"Accuracy:              {acc * 100:.2f}%")
@@ -97,4 +97,3 @@ print("\n--- Inference Time Performance ---")
 print(f"Total Execution Time:  {total_time_sec * 1000:.3f} ms")
 print(f"Avg Latency / Sample:  {avg_latency_us:.3f} µs")
 print(f"Throughput:            {throughput_fps:,.0f} Inferences/sec")
-print("==================================================")
