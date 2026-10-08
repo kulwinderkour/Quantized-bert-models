@@ -56,10 +56,8 @@ def matrix_multiply(A, B):
             result[i][j] = total
 
     return result
-# this will add bias 
 
-
-def add_bias(matrix, bias):
+def add_bias(matrix, bias): #add bias in the function
 
     rows = len(matrix)
     cols = len(matrix[0])
