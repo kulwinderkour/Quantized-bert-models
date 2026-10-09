@@ -64,7 +64,7 @@ def add_bias(matrix, bias): #add bias in the function
 
     result = create_matrix(rows, cols)
 
-    for i in range(rows):
+    for i in range(rows): 
         for j in range(cols):
             result[i][j] = matrix[i][j] + bias[0][j]
 
